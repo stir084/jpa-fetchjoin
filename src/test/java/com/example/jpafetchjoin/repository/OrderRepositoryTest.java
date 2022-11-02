@@ -1,10 +1,12 @@
 package com.example.jpafetchjoin.repository;
 
+import com.example.jpafetchjoin.domain.Member;
 import com.example.jpafetchjoin.domain.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
 
@@ -19,6 +21,9 @@ public class OrderRepositoryTest {
 
     @Autowired
     OrderRepository orderRepository;
+
+    @Autowired
+    MemberRepository memberRepository;
 
     @Test
     @Transactional
@@ -41,19 +46,46 @@ public class OrderRepositoryTest {
     }
 
     @Test
+    @Transactional
     public void 테스트2(){
-        String name1 = Optional.ofNullable("loose").orElse("test");
-        String name2 = Optional.ofNullable("loose").orElseGet(() -> "test");
-
-        System.out.println("name1 = " + name1);
-        System.out.println("name2 = " + name2);
-
+        List<Order> orderList = orderRepository.findAllFetchJoin2();
+        for (Order order : orderList) {
+            System.out.println(order.getItem());
+        }
     }
 
-    public String getName() {
-        System.out.println("getName 실행");
-        return "";
+    @Test
+    @Transactional
+    @Rollback(false)
+    public void 테스트3(){
+        List<Order> orderList = orderRepository.findAllFetchJoin3();
+        System.out.println(orderList.size());
+        for (Order order : orderList) {
+            order.getMember().setName("hello");
+        }
     }
+
+    @Test
+    @Transactional
+    @Rollback(false)
+    public void 테스트4(){
+        List<Member> memberList = memberRepository.findAllFetchJoin();
+        System.out.println(memberList.size());
+        for (Member member : memberList) {
+            System.out.println(member.getName());
+            List<Order> orderList = member.getOrders();
+            for (Order order : orderList) {
+                System.out.println("주문" + order.getItem());
+            }
+            //member.setName("boom");
+        }
+    }
+/*
+query.where(team.name.eq("AAA")
+
+        .and(member.age > 20));
+*/
+
     //fetch join은 기본적으로 from 대상이 되는 조건을 죄다 들고온다. 그리고 JPA가 내부적으로 그걸 다 들고온걸로 알고 설계되어있다.
     //그래서 DB와의 정합성이 일치하다고 판단한다.
     //그렇기때문에 from 대상은 where 조건이 가능한데, 만약에 fetch join의 필터링을 걸어버리면 JPA는 다 들고온걸로 판단한 것과 다르게 되어있어

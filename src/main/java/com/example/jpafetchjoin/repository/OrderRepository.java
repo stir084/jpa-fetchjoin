@@ -26,4 +26,14 @@ public class OrderRepository {
         return em.createQuery("select o from Order o join fetch o.member", Order.class) //join fetch Member가 아니다.
                 .getResultList();
     }
+
+    public List<Order> findAllFetchJoin2() {
+        return em.createQuery("select o from Order o join fetch o.member where o.item = 'banana'", Order.class) //join fetch Member가 아니다.
+                .getResultList();
+    }
+
+    public List<Order> findAllFetchJoin3() {
+        return em.createQuery("select o from Order o join fetch o.member m where o.id=2", Order.class) //join fetch Member가 아니다.
+                .getResultList(); //on은 m을 주든 o를 주든 다 안된다.
+    }
 }
