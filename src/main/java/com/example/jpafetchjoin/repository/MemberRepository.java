@@ -27,16 +27,19 @@ public class MemberRepository {
     // inner join만
     //지연로딩으로 인해 Member부터 가져오고 Order가 필요할 떄 lazy loading이 발생해서 3개가 다 나오는 듯 하다.
     //JPQL에서 콜렉션 조인은 모든 데이터를 다 가져오나?
+    //fetch join은 죄다 가져오는게 원칙인데 일부만 가져오면 안된다.
+    //그럼 내부적으로 JPA가 죄다가져왔다고 판단하는데, 이때 2차 캐시고 뭐고 해서 데이터 정합성이 꺠질 수 있다.
+    //난 그 꺠지는걸 구현하고싶은데 어떻게 하지 ㅠㅠㅠㅠㅠㅠ
 
     //select member0_.member_id as member_i1_0_, member0_.name as name2_0_
     // from Member member0_ inner join orders orders1_
     // on member0_.member_id=orders1_.member_id
 
     //JPQL과 Fetch join 다시 강의 듣기..
-    https://www.inflearn.com/questions/15876
-    https://loosie.tistory.com/750
-    https://stackoverflow.com/questions/5816417/how-to-properly-express-jpql-join-fetch-with-where-clause-as-jpa-2-criteriaq/5819631#5819631
-    http://java-persistence-performance.blogspot.com/2012/04/objects-vs-data-and-filtering-join.html
+    //https://www.inflearn.com/questions/15876
+    //https://loosie.tistory.com/750
+    //https://stackoverflow.com/questions/5816417/how-to-properly-express-jpql-join-fetch-with-where-clause-as-jpa-2-criteriaq/5819631#5819631
+    //http://java-persistence-performance.blogspot.com/2012/04/objects-vs-data-and-filtering-join.html
 
     //일반 SQL쿼리는 on절이 필요하지만 JPQL은 ON절 없이도 on이 자동으로 묵시적 조인이 발생한다.
     //묵시적 조인은 그냥 다른 객체 갖다 쓸 때 조인 발생하는거고
