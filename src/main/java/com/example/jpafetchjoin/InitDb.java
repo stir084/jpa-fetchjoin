@@ -30,38 +30,38 @@ public class InitDb {
         private final EntityManager em;
 
         public void dbInit1() {
-            Member member = createMember("kim");
+            Member member = createMember("Kim");
             em.persist(member);
 
-            Order order = createOrder("apple", member);
+            Order order = createOrder("Apple", member);
             em.persist(order);
-            order = createOrder("banana", member);
+            order = createOrder("Banana", member);
             em.persist(order);
-            order = createOrder("orange", member);
+            order = createOrder("Orange", member);
             em.persist(order);
         }
 
         public void dbInit2() {
-            Member member = createMember("lee");
+            Member member = createMember("Lee");
             em.persist(member);
 
-            Order order = createOrder("apple", member);
+            Order order = createOrder("Apple", member);
             em.persist(order);
-            order = createOrder("banana", member);
+            order = createOrder("Banana", member);
             em.persist(order);
-            order = createOrder("orange", member);
+            order = createOrder("Orange", member);
             em.persist(order);
         }
 
         public void dbInit3() {
-            Member member = createMember("park");
+            Member member = createMember("Park");
             em.persist(member);
 
-            Order order = createOrder("apple", member);
+            Order order = createOrder("Apple", member);
             em.persist(order);
-            order = createOrder("banana", member);
+            order = createOrder("Banana", member);
             em.persist(order);
-            order = createOrder("orange", member);
+            order = createOrder("Orange", member);
             em.persist(order);
         }
 
