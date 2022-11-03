@@ -1,13 +1,8 @@
 package com.example.jpafetchjoin.domain;
 
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import javax.persistence.*;
-import java.time.LocalDateTime;
-
 import static javax.persistence.FetchType.LAZY;
 
 @Entity

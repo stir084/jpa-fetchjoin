@@ -1,42 +1,26 @@
-package com.example.jpafetchjoin.repository;
+package com.example.jpafetchjoin;
 
-import com.example.jpafetchjoin.MemberDto;
 import com.example.jpafetchjoin.domain.Member;
 import com.example.jpafetchjoin.domain.Order;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.StatelessSession;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
-
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Transactional
-public class OrderRepositoryTest {
+public class FetchJoinTest {
 
     @PersistenceContext
     EntityManager em;
-
-    @Autowired
-    OrderRepository orderRepository;
-
-    @Autowired
-    MemberRepository memberRepository;
 
     // N+1 소개 시작
     @Test
@@ -166,17 +150,14 @@ public class OrderRepositoryTest {
     @Test
     public void DTO조회(){
         List<MemberDto> memberDtoList = em.createQuery(
-                "select com.example.jpafetchjoin.MemberDto() " +
-                        "from Member m join fetch m.orders o where o.item = 'Apple'", MemberDto.class)
+                "select new com.example.jpafetchjoin.MemberDto(o.id, m.name, o.item) " +
+                          "from Member m join m.orders o", MemberDto.class)
                 .getResultList();
-
-        /*for (MemberDto memberDto : memberDtoList) {
-            List<Order> orderList = memberDto.getOrders();
-            for (Order order : orderList) {
-                System.out.println(memberDto.getName()+"님은 "+order.getItem()+"을 주문함");
-            }
-        }*/
+        for (MemberDto memberDto : memberDtoList) {
+            System.out.println(memberDto.getName()+"님은 "+memberDto.getItem()+"을 주문함");
+        }
     }
+
     // Fetch Join 결과를 올바르게 받아오기 끝
 }
 

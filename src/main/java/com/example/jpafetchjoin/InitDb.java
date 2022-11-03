@@ -5,7 +5,6 @@ import com.example.jpafetchjoin.domain.Order;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 
